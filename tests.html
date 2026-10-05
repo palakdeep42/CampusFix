@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CampusFix Automated Test Suite</title>
+</head>
+<body>
+  <h1>CampusFix Test Suite</h1>
+  <div id="results"></div>
+
+  <script type="module">
+    import { store, SEED_ISSUES, CATEGORIES, PRIORITIES } from './js/store.js';
+    import { analyzePriority, generateSmartInsights } from './js/smart-engine.js';
+
+    const results = [];
+    function assert(name, condition) {
+      if (condition) {
+        results.push({ name, passed: true });
+        console.log(`[PASS] ${name}`);
+      } else {
+        results.push({ name, passed: false });
+        console.error(`[FAIL] ${name}`);
+      }
+    }
+
+    try {
+      // 1. Initial Seed Data
+      store.resetToSeed();
+      const initialIssues = store.getIssues();
+      assert('Seed data contains 8 realistic campus issues', initialIssues.length === 8);
+      
+      const stats = store.getStats();
+      assert('Initial total stats matches 8', stats.total === 8);
+      assert('Initial pending is 3', stats.pending === 3);
+      assert('Initial inProgress is 2', stats.inProgress === 2);
+      assert('Initial resolved is 3', stats.resolved === 3);
+      assert('Resolution rate calculated correctly (38%)', stats.resolutionRate === 38);
+
+      // 2. Smart Priority Recommendation Engine
+      const highTest = analyzePriority(
+        'Dangerous sparking and fire hazard in main server rack',
+        'Exposed live wires are sparking and burning smell is intense'
+      );
+      assert('Smart Engine classifies sparking/fire/live wires as High priority', highTest.priority === 'High');
+      assert('Smart Engine confidence is >= 90%', highTest.confidence >= 90);
+      assert('Smart Engine detects matched keywords', highTest.matches.length >= 2);
+
+      const floodTest = analyzePriority(
+        'Severe water pipe burst flooding corridor',
+        'Water gushing from pipe connector causing flood'
+      );
+      assert('Smart Engine classifies severe water pipe burst as High priority', floodTest.priority === 'High');
+
+      const wifiTest = analyzePriority(
+        'Wi-Fi disconnected in central library',
+        'Students unable to access internet or library portal'
+      );
+      assert('Smart Engine classifies Wi-Fi outage as Medium priority', wifiTest.priority === 'Medium');
+
+      const cosmeticTest = analyzePriority(
+        'Whiteboard marker dry and table scratched',
+        'Minor cosmetic wear on classroom table'
+      );
+      assert('Smart Engine classifies cosmetic issue as Low priority', cosmeticTest.priority === 'Low');
+
+      // 3. Issue Submission & Persistence
+      const newIssue = store.addIssue({
+        title: 'Chemical fumes leak in chemistry lab ventilation',
+        description: 'Strong chemical smell and toxic fumes leaking from fume hood #2',
+        location: 'Science Block B, Room 108',
+        category: 'Infrastructure',
+        priority: 'High',
+        reporterName: 'Test Student'
+      });
+      assert('New issue gets auto-generated ID', newIssue.id.startsWith('CF-'));
+      assert('New issue is added to store and persists', store.getIssues().length === 9);
+
+      const statsAfterAdd = store.getStats();
+      assert('Stats dynamically updated: pending increases to 4', statsAfterAdd.pending === 4);
+      assert('Stats dynamically updated: total increases to 9', statsAfterAdd.total === 9);
+
+      // 4. Status Transitions
+      store.updateIssueStatus(newIssue.id, 'In Progress');
+      const statsProgress = store.getStats();
+      assert('Status update to In Progress decreases pending to 3 and increases inProgress to 3', statsProgress.pending === 3 && statsProgress.inProgress === 3);
+
+      store.updateIssueStatus(newIssue.id, 'Resolved', 'Fume hood motor replaced and air quality verified.');
+      const statsResolved = store.getStats();
+      assert('Status update to Resolved increases resolved to 4', statsResolved.resolved === 4);
+      const updatedIssue = store.getIssueById(newIssue.id);
+      assert('Resolution note preserved', updatedIssue.resolutionNote.includes('air quality verified'));
+
+      // 5. Smart Insights generation
+      const insights = generateSmartInsights(store.getIssues());
+      assert('Smart Insights generated dynamic campus warnings', insights.length >= 2);
+
+      // 6. Delete Issue
+      store.deleteIssue(newIssue.id);
+      assert('Delete issue removes record from store', store.getIssues().length === 8);
+
+      // 7. Reset to seed
+      store.resetToSeed();
+      assert('Reset to seed restores initial state', store.getIssues().length === 8);
+
+      document.getElementById('results').innerHTML = `
+        <h2>${results.filter(r => r.passed).length} / ${results.length} Tests Passed</h2>
+        <ul>
+          ${results.map(r => `<li style="color: ${r.passed ? 'green' : 'red'};">${r.passed ? '✓' : '✗'} ${r.name}</li>`).join('')}
+        </ul>
+      `;
+      window.__ALL_TESTS_PASSED__ = results.every(r => r.passed);
+    } catch (err) {
+      console.error(err);
+      document.getElementById('results').innerHTML = `<h2 style="color: red;">Error: ${err.message}</h2>`;
+      window.__ALL_TESTS_PASSED__ = false;
+    }
+  </script>
+</body>
+</html>

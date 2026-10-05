@@ -1,0 +1,429 @@
+/* css/dashboard.css - Dashboard Layout, KPI Cards, Overview Bar, Category List & Insights */
+
+/* KPI Summary 4-Column Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.stat-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.stat-icon-wrapper {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon-wrapper.total { background: #F3F4F6; color: var(--text-charcoal); }
+.stat-icon-wrapper.pending { background: #FEF3C7; color: #D97706; }
+.stat-icon-wrapper.progress { background: #EFF6FF; color: #2563EB; }
+.stat-icon-wrapper.resolved { background: #ECFDF5; color: #059669; }
+.stat-icon-wrapper.urgent { background: #FEF2F2; color: #DC2626; }
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-charcoal);
+  letter-spacing: -0.6px;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.stat-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.badge-trend {
+  font-size: 11.5px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-trend.positive { color: #059669; }
+
+.stat-subtext {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+/* Dashboard Main Grid (2 columns: 1.8fr left, 1fr right) */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.75fr 1fr;
+  gap: 20px;
+}
+
+.dashboard-main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard-side-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Status Overview Card */
+.status-overview-card {
+  padding: 20px 22px;
+}
+
+.status-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot.pending { background-color: var(--status-pending-dot); }
+.legend-dot.in-progress { background-color: var(--status-progress-dot); }
+.legend-dot.resolved { background-color: var(--status-resolved-dot); }
+
+.progress-stacked-bar {
+  height: 10px;
+  background-color: #F1F2F4;
+  border-radius: var(--radius-pill);
+  display: flex;
+  overflow: hidden;
+  margin: 14px 0 16px;
+}
+
+.bar-segment {
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+.bar-segment.pending { background-color: #F59E0B; }
+.bar-segment.in-progress { background-color: #3B82F6; }
+.bar-segment.resolved { background-color: #10B981; }
+
+.status-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.metric-pill {
+  background: var(--bg-page);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-pill.highlight {
+  background: #FFF5F2;
+  border-color: #FFE0D4;
+}
+
+.metric-num {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-charcoal);
+  line-height: 1.1;
+}
+
+.metric-pill.highlight .metric-num {
+  color: var(--primary-orange);
+}
+
+.metric-txt {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* Recent Issues Card & Table Filters */
+.recent-issues-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.recent-issues-card .card-header {
+  padding: 18px 22px 14px;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.table-filters {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-chip {
+  background: transparent;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-chip:hover {
+  background: var(--bg-page);
+  color: var(--text-charcoal);
+}
+
+.filter-chip.active {
+  background: var(--text-charcoal);
+  border-color: var(--text-charcoal);
+  color: #FFFFFF;
+}
+
+.recent-issues-card .card-footer {
+  padding: 12px 20px;
+  background: var(--bg-card-subtle);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Smart Insights Panel */
+.smart-insights-card {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFFDFB 100%);
+  border: 1px solid #FFE4D6;
+}
+
+.smart-badge-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--primary-orange-light);
+  color: var(--primary-orange);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.smart-pill-live {
+  font-size: 10px;
+  font-weight: 700;
+  background: #FFF0EB;
+  color: var(--primary-orange);
+  border: 1px solid #FFD4C4;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.5px;
+}
+
+.insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.insight-item {
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  border: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+  transition: border-color var(--transition-fast);
+}
+
+.insight-item.insight-urgent {
+  background: #FEF2F2;
+  border-color: #FECACA;
+}
+
+.insight-item.insight-warning {
+  background: #FFFBEB;
+  border-color: #FDE68A;
+}
+
+.insight-item.insight-trend {
+  background: #EFF6FF;
+  border-color: #DBEAFE;
+}
+
+.insight-item.insight-success {
+  background: #ECFDF5;
+  border-color: #A7F3D0;
+}
+
+.insight-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.insight-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.insight-badge.urgent { color: #DC2626; }
+.insight-badge.warning { color: #D97706; }
+.insight-badge.trend { color: #2563EB; }
+.insight-badge.success { color: #059669; }
+
+.insight-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-charcoal);
+  margin-bottom: 3px;
+}
+
+.insight-desc {
+  font-size: 12px;
+  color: var(--text-body);
+  line-height: 1.4;
+}
+
+/* Category Breakdown List */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.category-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 50px;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-page);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-charcoal);
+  white-space: nowrap;
+}
+
+.category-meter {
+  width: 100%;
+}
+
+.category-bar {
+  height: 7px;
+  background: #F1F2F4;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.category-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  transition: width 0.4s ease;
+}
+
+.category-bar-fill.cat-electrical { background-color: #EAB308; }
+.category-bar-fill.cat-wifi { background-color: #3B82F6; }
+.category-bar-fill.cat-cleanliness { background-color: #10B981; }
+.category-bar-fill.cat-plumbing { background-color: #06B6D4; }
+.category-bar-fill.cat-equipment { background-color: #8B5CF6; }
+.category-bar-fill.cat-infrastructure { background-color: #F97316; }
+
+.category-count {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.count-num {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-charcoal);
+}
+
+.count-percent {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Responsive Dashboard */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .status-metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

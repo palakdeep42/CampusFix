@@ -1,6 +1,6 @@
 # CampusFix — Smart Campus Issue Reporting Platform
 
-> **1-Hour Website Development Competition Prototype**  
+
 > A centralized, responsive SaaS platform empowering students and campus facility administrators to report, prioritize, and track campus infrastructure issues in real-time.
 
 ---
@@ -125,16 +125,3 @@ Open **`http://localhost:8080/tests.html`** in your browser. All **22 / 22 Tests
 
 ---
 
-## 🎯 Competition Evaluation Guide
-
-To experience all features in under 2 minutes:
-1. **Explore the Dashboard:** Observe the 4 KPI cards, the Issue Status Overview bar, and the Smart Insight Panel.
-2. **Test Smart Priority AI:**
-   * Click **+ Report Issue** in the top bar or sidebar.
-   * Under *"Try Smart Recommendation Test Prompts"* on the right, click **⚡ Dangerous Sparking**.
-   * Notice how the Smart Priority Engine instantly detects *"Fire/Combustion Risk"* and *"Electrical Sparking"*, displays *98% Confidence*, and auto-selects **High Priority**.
-   * Click the Low or Medium card to verify that user manual override is smooth and supported.
-3. **Submit an Issue:** Click *"Submit Campus Issue"* and see it appear in the **My Reports** Kanban board.
-4. **Drag & Drop in Kanban:** Drag a card from **Pending** to **In Progress**, or click the quick action **✓ Resolve** button. Notice that dashboard stats and resolution rates update instantly.
-5. **Search Anything:** Press the `/` key on your keyboard to instantly focus the search bar. Type *"Library"* or *"Plumbing"* to view instant results.
-6. **Reset Dataset:** Go to **Settings** and click **Reset Seed Data** to restore the pristine competition state anytime.
